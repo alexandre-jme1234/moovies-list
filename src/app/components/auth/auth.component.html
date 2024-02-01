@@ -1,0 +1,20 @@
+<ng-container>
+    <form [formGroup]="userForm" class="form-container" (ngSubmit)="onSubmit()">
+        <h2>Connexion</h2>
+        <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input type="text" name="username" formControlName="username" matInput />
+        </mat-form-field>
+        <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input type="text" name="identifier" formControlName="identifier" matInput />
+        </mat-form-field>
+        <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input type="text" name="password" formControlName="password" matInput />
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Valider</button>
+        <p>ou</p>
+        <a [routerLink]="['/registration']">s'enregistrer</a>
+    </form>
+</ng-container>

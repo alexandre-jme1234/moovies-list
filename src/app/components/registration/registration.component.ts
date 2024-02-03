@@ -1,5 +1,5 @@
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -7,9 +7,10 @@ import { Router, RouterModule } from '@angular/router';
 import { User } from '../../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
-import { Observable, throwError } from 'rxjs';
-import { error } from 'console';
-import { catchError, map } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
+import { StorageService } from '../../services/local-service.service';
+
+
 
 @Component({
   selector: 'app-registration',
@@ -24,35 +25,51 @@ export class RegistrationComponent implements OnInit {
   public user!: User;
 
   constructor(
-    private formBuilder: FormBuilder,
+    public formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private http: HttpClient){
+    private http: HttpClient,
+    public storage: StorageService
+    ){
     this.userForm = this.createForm();
   }
 
+
+  get isLogged() {
+    return this.isLoggedIn;
+  } 
 
   ngOnInit() {
     this.userForm = this.createForm();
+    this.registrate();
   }
-
+  
   onSubmit() {
   }
 
-  public registrate(): Observable<object> {
+  public registrate(): any {
     const val = this.userForm.value; 
     console.log('userform entrance', val)
     const userValue = {username: val.username, email: val.identifier, password: val.password, role: "1"}
 
-    return this.http.post('http://localhost:1337/api/auth/local/register', userValue).pipe(
-      map((data) => {
-        console.log(data);
-        this.isLoggedIn = true; 
-        this.router.navigateByUrl('/home');
-        return data;
-      })
-    );
+    return this.http.post('http://localhost:1337/api/auth/local/register', userValue)
+    .pipe(first())
+    .subscribe({
+        next: () => {
+          this.userForm.enable();
+          this.isLoggedIn = true;
+          this.storage.setItem('user', JSON.stringify(userValue));
+
+          this.router.navigateByUrl('/home');
+        },
+      error: () => {
+          this.userForm.enable();
+          this.isLoggedIn = false;
+      }
+    })
   };
+
+  
   
   getAllUsers() {
     return this.http.get('http://localhost:1337/api/users/').subscribe({
@@ -74,25 +91,4 @@ export class RegistrationComponent implements OnInit {
   get authsService(): AuthService {
     return this.authService
   }
-
-  login() {
-    const val = this.userForm.value;
-    console.log(val)
-
-    if(val.identifier && val.password){
-      this.authService.login(val.identifier, val.password).subscribe(
-        () => {
-          console.log("User is Logged in");
-          this.router.navigateByUrl('/');
-        }
-      )
-    }
-
-
-  /* passwordFalse(password: FormControl): {forbidden: boolean} | null {
-    if(this.passwordForbidden.includes(password.value)) return null;
-    return {
-      forbidden: true
-  }
-}*/
-} }
+}

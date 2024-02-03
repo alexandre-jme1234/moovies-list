@@ -7,3 +7,12 @@ form {
     flex-wrap: wrap;
     align-items: center;
 }
+
+
+#imgBg {
+    height: auto;
+    color: aliceblue;
+    background-image: url("../../../assets/bg_img.jpg");
+    background-size: 100%;
+    background-size: cover;
+}

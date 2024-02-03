@@ -1,11 +1,11 @@
-import { FormControl } from "@angular/forms";
-
 export interface User {
     id: number,
     username: string,
     identifier: string,
     password: string
 }
+
+
 
 export class UserAuth implements User {
     constructor(

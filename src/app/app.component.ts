@@ -8,7 +8,7 @@ import { AuthComponent } from "./components/auth/auth.component";
     standalone: true,
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',
-    imports: [CommonModule, RouterOutlet, AuthComponent]
+    imports: [CommonModule, RouterOutlet, AuthComponent ]
 })
 export class AppComponent {
   title = 'moovies-list';

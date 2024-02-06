@@ -4,16 +4,19 @@
         <mat-form-field>
         <mat-label>Username</mat-label>
         <input type="text" name="username" formControlName="username" matInput />
-        </mat-form-field>
-        <mat-form-field>
+    </mat-form-field>
+    <mat-form-field>
         <mat-label>Email</mat-label>
         <input type="text" name="identifier" formControlName="identifier" matInput />
-        </mat-form-field>
-        <mat-form-field>
+    </mat-form-field>
+    <mat-form-field>
         <mat-label>Password</mat-label>
         <input type="text" name="password" formControlName="password" matInput />
-        </mat-form-field>
-        <button mat-raised-button color="primary" type="submit" (click)="login()">Valider</button>
+    </mat-form-field>
+    <div id="message-auth-error"*ngIf="auth.isError === false">
+        <mat-icon style="color: red;" aria-hidden="true" aria-label="error">close</mat-icon>
+        <p style="color: red; margin: 0px;">Username or password are wrong, please try again.</p></div>
+    <button mat-raised-button color="primary" type="submit" (click)="setLogin()">Valider</button>
         <p>ou</p>
         <a [routerLink]="['/registration']">s'enregistrer</a>
     </form>

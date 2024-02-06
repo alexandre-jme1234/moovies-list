@@ -16,3 +16,15 @@ form {
     background-size: 100%;
     background-size: cover;
 }
+
+#message-auth-error{
+    background-color: white;
+    display: flex;
+    align-content: center;
+    flex-direction: row;
+    align-items: center;
+    opacity: 80%;
+    border-radius: 4px;
+    padding: 5px;
+    margin: 10px;
+}

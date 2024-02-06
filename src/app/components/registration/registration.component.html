@@ -13,7 +13,10 @@
         <mat-label>Password</mat-label>
         <input type="text" name="password" formControlName="password" matInput />
         </mat-form-field>
-        <button mat-raised-button color="primary" type="submit" (click)="registrate()">Valider</button>
+        <div id="message-auth-error" *ngIf="authService.isError === false">
+        <mat-icon style="color: red;" aria-hidden="true" aria-label="error">close</mat-icon>
+        <p style="color: red; margin: 0px;">Username or password are wrong, please try again.</p></div>
+        <button mat-raised-button color="primary" type="submit" (click)="setRegistrate()">Valider</button>
         <p>ou</p>
         <a [routerLink]="['/connexion']">se connecter</a>
     </form>

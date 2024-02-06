@@ -9,13 +9,16 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { first } from 'rxjs/operators';
 import { StorageService } from '../../services/local-service.service';
+import { Observable } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatButtonModule, RouterModule],
+  imports: [MatIconModule, CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatButtonModule, RouterModule],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss'
 })
@@ -26,9 +29,7 @@ export class RegistrationComponent implements OnInit {
 
   constructor(
     public formBuilder: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private http: HttpClient,
+    public authService: AuthService,
     public storage: StorageService
     ){
     this.userForm = this.createForm();
@@ -38,48 +39,23 @@ export class RegistrationComponent implements OnInit {
   get isLogged() {
     return this.isLoggedIn;
   } 
+  
+    get authsService(): AuthService {
+      return this.authService;
+    }
 
   ngOnInit() {
     this.userForm = this.createForm();
-    this.registrate();
+    this.setRegistrate();
   }
   
   onSubmit() {
   }
 
-  public registrate(): any {
-    const val = this.userForm.value; 
-    console.log('userform entrance', val)
-    const userValue = {username: val.username, email: val.identifier, password: val.password, role: "1"}
-
-    return this.http.post('http://localhost:1337/api/auth/local/register', userValue)
-    .pipe(first())
-    .subscribe({
-        next: () => {
-          this.userForm.enable();
-          this.isLoggedIn = true;
-          this.storage.setItem('user', JSON.stringify(userValue));
-
-          this.router.navigateByUrl('/home');
-        },
-      error: () => {
-          this.userForm.enable();
-          this.isLoggedIn = false;
-      }
-    })
-  };
 
   
-  
-  getAllUsers() {
-    return this.http.get('http://localhost:1337/api/users/').subscribe({
-      next: (data) => console.log(data),
-      error: (err) => console.log(err)
-    })
-
-  }
   private createForm() {
-   return (this.userForm = this.formBuilder.group({
+    return (this.userForm = this.formBuilder.group({
       id: [0, []],
       username: ['', [Validators.required]],
       identifier: ['', [Validators.required, Validators.email]],
@@ -88,7 +64,12 @@ export class RegistrationComponent implements OnInit {
     )
   }
 
-  get authsService(): AuthService {
-    return this.authService
+
+  public setRegistrate() {
+    const val = this.userForm.value; 
+    console.log('userform entrance', val)
+    this.user = {id: val.length+1, username: val.username, email: val.identifier, password: val.password, role: "1"}
+    console.log(this.user)
+    return this.authService.registrate(this.user)
   }
 }

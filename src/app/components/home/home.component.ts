@@ -16,6 +16,8 @@ export class HomeComponent implements OnInit {
     receivedData: any;
     dateRealese: number = Date.now();
     
+
+    // length moovies list : output by emit become children app-list
     receiveData(data: any) {
         this.receivedData = data;
     }

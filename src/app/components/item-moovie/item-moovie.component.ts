@@ -1,5 +1,8 @@
 import { NgFor } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { MooviesService } from '../../services/moovies.service';
+import { Moovie } from '../../models/moovie.model';
+
 @Component({
   selector: 'app-item-moovie',
   standalone: true,
@@ -16,9 +19,13 @@ export class ItemMoovieComponent implements OnInit {
   @Input()
   moovies: any[] = [];
 
-  
 
   ngOnInit(): void {
-   this.moovies;
+   console.log(this.moovies);
   }
+
+
+
+  
+
 }

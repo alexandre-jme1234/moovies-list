@@ -13,17 +13,29 @@ import { NgFor, NgIf } from '@angular/common';
 })
 export class MooviesListComponent implements OnInit {
       public moovies: Moovie[] = [];
-      public data = this.mooviesService.moovies;
+      // public data = this.moovies.moovies;
 
       ngOnInit(): void {
-        this.getAllMoovies(this.data);
+        // this.getAllMoovies(this.data);
+        this.setTitle();
       }
 
-      constructor(public mooviesService: MooviesService) {}
+      constructor(public moovieService: MooviesService) {}
 
       getAllMoovies(dt: Moovie[]): Moovie[] {
         console.log('init', dt)
         dt.forEach((el: any) => { this.moovies.push(el) });
         return this.moovies;
       }
+
+      setTitle() {
+        let urlImg = 'https://image.tmdb.org/t/p/w185'
+        this.moovieService.fetchMoovies().subscribe({
+            next: (data) => {
+            console.log(data[1]);
+            this.moovies = data[1].map((el: any) => ({ title: el.title, poster_path: `${urlImg}${el.poster_path}` }))
+            console.log(this.moovies);
+        }
+        });     
+    }
 }

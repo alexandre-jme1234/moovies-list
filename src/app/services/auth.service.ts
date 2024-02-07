@@ -64,6 +64,7 @@ export class AuthService {
   };
 
   public logout(): void {
+    // vide navigator store
     this.storage.removeItem('user');
     this.router.navigateByUrl('/connexion');
     this.isLogedIn = false;

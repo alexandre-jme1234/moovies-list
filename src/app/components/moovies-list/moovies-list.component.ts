@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ItemMoovieComponent } from "../item-moovie/item-moovie.component";
 import { Moovie } from '../../models/moovie.model';
 import { MooviesService } from '../../services/moovies.service';
-import { NgFor, NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-moovies-list',
@@ -13,29 +12,24 @@ import { NgFor, NgIf } from '@angular/common';
 })
 export class MooviesListComponent implements OnInit {
       public moovies: Moovie[] = [];
-      // public data = this.moovies.moovies;
 
       ngOnInit(): void {
-        // this.getAllMoovies(this.data);
-        this.setTitle();
+        this.getMoovie();
       }
 
-      constructor(public moovieService: MooviesService) {}
+      constructor(public moovieService: MooviesService) {};
 
-      getAllMoovies(dt: Moovie[]): Moovie[] {
-        console.log('init', dt)
-        dt.forEach((el: any) => { this.moovies.push(el) });
-        return this.moovies;
-      }
-
-      setTitle() {
+      getMoovie() {
         let urlImg = 'https://image.tmdb.org/t/p/w185'
         this.moovieService.fetchMoovies().subscribe({
             next: (data) => {
-            console.log(data[1]);
-            this.moovies = data[1].map((el: any) => ({ title: el.title, poster_path: `${urlImg}${el.poster_path}` }))
-            console.log(this.moovies);
-        }
+
+            // map vers movie list
+            this.moovies = data[1].map((el: any) => ({ 
+              title: el.title, 
+              poster_path: `${urlImg}${el.poster_path}` 
+            }))
+        }, error: (err) => { console.log(err)}
         });     
     }
 }

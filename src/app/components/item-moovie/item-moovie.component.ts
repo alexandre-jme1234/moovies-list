@@ -21,7 +21,7 @@ export class ItemMoovieComponent implements OnInit {
 
 
   ngOnInit(): void {
-   console.log(this.moovies);
+   this.moovies;
   }
 
 

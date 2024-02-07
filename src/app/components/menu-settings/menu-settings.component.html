@@ -1,5 +1,5 @@
 <button mat-button style="color: white" [matMenuTriggerFor]="menu">Menu</button>
 <mat-menu #menu="matMenu">
-  <button mat-menu-item>Profil</button>
+  <button mat-menu-item (click)="goEdit()" routerLink="settings">Profil</button>
   <button mat-stroked-button color="warn" (click)="auth.logout()" >Log Out</button>
 </mat-menu>

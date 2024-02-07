@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { StorageService } from './local-service.service';
-import { BehaviorSubject, first, map } from 'rxjs';
+import { BehaviorSubject, Observable, first, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class AuthService {
   public isLogedIn: boolean = false;
   constructor( private http: HttpClient, private router: Router, private storage: StorageService ) {};
   public user!: {};
-  private userSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private userSubject: BehaviorSubject<object> = new BehaviorSubject<object>({});
 
 
   public login(user: {}) {
@@ -22,7 +22,7 @@ export class AuthService {
         next: () => {
           // this.userForm.enable();
           this.userSubject.next(user);
-          console.log(this.userSubject)
+          console.log(typeof this.userSubject)
           this.isLogedIn = true;
           
           // store user in navogator
@@ -72,7 +72,7 @@ export class AuthService {
     })
   };
 
-  public getImageProfil(userName: any) {
+  public getImageProfil(userName: any): Observable<any> {
     return this.http.get('http://localhost:1337/api/users/')
     .pipe(map((response: any) => {
       let findUser = response.find((el: any) => el.username  === userName.identifier  );
@@ -80,11 +80,13 @@ export class AuthService {
       if(findUser){
 
         //login user
-        return findUser.profil_img;
-      } else {
+        return findUser.profil_img
+      } else if (findUserValue) {
         
         // registrate user
         return findUserValue.profil_img;
+      } else {
+        return null;
       }
     }))
   }

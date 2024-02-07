@@ -19,8 +19,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     receivedData: any;
     dateRealese: number = Date.now();
-    imgProfil!: string;
-    currentUser: any = null;
+    imgProfil!: any;
+    currentUser!:{identifier: string, password: string};
     usernameCurrent!: string;
     getCurrentuser!: Subscription
     
@@ -32,9 +32,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         // get currentUser img profil & auth informations
         this.getCurrentuser = this.auth.getUserObservable().subscribe({
-            next: (data) => {
-                this.currentUser = data,
-                this.usernameCurrent = data.identifier;
+            next: (data: any) => {
+                this.currentUser = data;
+                if(data.username) {
+                    this.usernameCurrent = data.username;
+                } else {
+                    this.usernameCurrent = this.currentUser.identifier;
+                };
                 this.auth.getImageProfil(this.currentUser).subscribe({
                     next: (data) => {this.imgProfil = data, console.log(this.imgProfil)},
                     error: (err) => console.log(err)
@@ -50,6 +54,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.getCurrentuser.unsubscribe();
+        // this.getCurrentuser.unsubscribe();
     }
 }

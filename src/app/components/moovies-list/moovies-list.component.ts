@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ItemMoovieComponent } from "../item-moovie/item-moovie.component";
 import { Moovie } from '../../models/moovie.model';
 import { MooviesService } from '../../services/moovies.service';
@@ -12,6 +12,7 @@ import { MooviesService } from '../../services/moovies.service';
 })
 export class MooviesListComponent implements OnInit {
       public moovies: Moovie[] = [];
+      @Output() lgMoovies = new EventEmitter<any>();
 
       ngOnInit(): void {
         this.getMoovie();
@@ -21,15 +22,16 @@ export class MooviesListComponent implements OnInit {
 
       getMoovie() {
         let urlImg = 'https://image.tmdb.org/t/p/w185'
+
         this.moovieService.fetchMoovies().subscribe({
             next: (data) => {
-
             // map vers movie list
             this.moovies = data[1].map((el: any) => ({ 
               title: el.title, 
               poster_path: `${urlImg}${el.poster_path}` 
             }))
+            this.lgMoovies.emit(data[1].length);
         }, error: (err) => { console.log(err)}
-        });     
+        });
     }
 }

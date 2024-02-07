@@ -31,6 +31,7 @@ export class MooviesListComponent implements OnInit {
               poster_path: `${urlImg}${el.poster_path}` 
             }))
             this.lgMoovies.emit(data[1].length);
+            
         }, error: (err) => { console.log(err)}
         });
     }

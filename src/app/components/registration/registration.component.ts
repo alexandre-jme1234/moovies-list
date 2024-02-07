@@ -25,7 +25,7 @@ import { CommonModule } from '@angular/common';
 export class RegistrationComponent implements OnInit {
   private isLoggedIn: boolean = false;
   public userForm: FormGroup
-  public user!: User;
+  public user!: any;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -66,10 +66,11 @@ export class RegistrationComponent implements OnInit {
 
 
   public setRegistrate() {
-    const val = this.userForm.value; 
-    console.log('userform entrance', val)
+    const val = this.userForm.value;
+    
+    // assign clé valeur conforme au model strapi
     this.user = {id: val.length+1, username: val.username, email: val.identifier, password: val.password, role: "1"}
-    console.log(this.user)
+
     return this.authService.registrate(this.user)
   }
 }

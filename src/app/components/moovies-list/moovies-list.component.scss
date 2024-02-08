@@ -1,0 +1,15 @@
+.slider-moovies {
+    max-width: 100%;
+    display: inline-block;
+    height: 500px;
+    overflow-x: scroll;
+    #moovies-list {
+        max-height: 100%;
+        display: flex;
+    }
+}
+
+.slider-moovies::-webkit-scrollbar {
+    height: 0;
+    display: none;
+}

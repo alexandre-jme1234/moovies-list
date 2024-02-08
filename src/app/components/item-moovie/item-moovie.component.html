@@ -1,8 +1,7 @@
-<div style="height: auto; display: flex; flex-wrap: wrap;">
+
 <div class="item-contain" *ngFor="let moovie of moovies">
     <img style="height: auto; width: 200px" [src]="moovie.poster_path" alt="poster">
     <h3 style="color: white">{{moovie.title}}</h3>
     <button type="button" mat-button color="primary">En savoir plus</button>
-</div>
 </div>
 

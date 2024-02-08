@@ -1,5 +1,14 @@
-<p style="color: aliceblue;">edit-profil works!</p>
-<div>
-    <app-auth></app-auth>
-</div>
 
+<div style="display: flex; width: auto; flex-direction: column; align-items: center; height: 444px; justify-content: space-around">
+    <button style="margin-right: 55%;" mat-fab color="primary" aria-label="arrow_back" (click)="stepBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    <img style="height: 100px;  width: 100px; object-fit: cover; border-radius: 50px;" [src]="imgProfil" alt="">
+    <form [formGroup]="userForm" id="imgBg" class="form-container" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+            <mat-label>Photo Profil</mat-label>
+            <input type="text" name="profil_img" formControlName="profil_img" matInput />
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" (click)="setProfilImg()">Valider</button>
+    </form>
+</div>

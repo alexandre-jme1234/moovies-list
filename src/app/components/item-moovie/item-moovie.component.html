@@ -1,7 +1,7 @@
 
 <div class="item-contain" *ngFor="let moovie of moovies">
-    <img style="height: auto; width: 200px" [src]="moovie.poster_path" alt="poster">
-    <h3 style="color: white">{{moovie.title}}</h3>
-    <button type="button" mat-button color="primary">En savoir plus</button>
+    <img class="h-auto w-400" [src]="moovie.poster_path" alt="poster">
+    <h3 class="text-white">{{moovie.title}}</h3>
+    <button type="button" mat-button color="primary" (click)="findMovie(moovie)">En savoir plus</button>   
 </div>
 

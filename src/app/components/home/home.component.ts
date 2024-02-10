@@ -7,13 +7,15 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { StorageService } from '../../services/local-service.service';
 import { Subscription } from 'rxjs';
+import { MovieDetailComponent } from "../movie-detail/movie-detail.component";
+import { ItemMoovieComponent } from "../item-moovie/item-moovie.component";
 
 @Component({
     selector: 'app-home',
     standalone: true,
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss',
-    imports: [CommonModule, MooviesListComponent, MenuSettingsComponent, MenuSettingsComponent, MooviesListComponent, MatMenuModule, MatButtonModule]
+    imports: [CommonModule, MooviesListComponent, MenuSettingsComponent, MenuSettingsComponent, MooviesListComponent, MatMenuModule, MatButtonModule, MovieDetailComponent, ItemMoovieComponent]
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
@@ -23,6 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     currentUser!:{identifier: string, password: string};
     usernameCurrent!: string;
     getCurrentuser!: Subscription
+    dtMoovie: any;
     
     constructor(public auth: AuthService, public storage: StorageService ) {
     }
@@ -51,6 +54,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     // length moovies list : output by emit become children app-list
     receiveData(data: any) {
         this.receivedData = data;
+    }
+
+    receiveDtMoovie(el: any) {
+        console.log('dtMoovie', el)
+        this.dtMoovie = el;
     }
 
     ngOnDestroy(): void {

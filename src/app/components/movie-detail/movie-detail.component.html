@@ -1,0 +1,31 @@
+<div *ngIf="moovie" class="col container mx-auto px-20">
+    <div class="flex row">
+        <div class=""><img [src]="poster_path" alt=""></div>
+        <div class="flex-col p-5"><h1>{{moovie.title}}</h1>
+        <div class="flex row">
+            <div class="flex-col p-5">
+                <h2>Popularité</h2>
+                <div class="text-white"><p>{{moovie.vote_average}}</p></div>
+            </div>
+            <div class="flex-col p-5">
+            <h2>Sortie le</h2>
+            <div class="text-white"><p>{{moovie.release_date | date:'mediumDate'}}</p></div>
+        </div>
+        </div>
+</div>
+    </div>
+    <div class="text-white mt-10"><h2>Description</h2>
+    <p>{{moovie.overview}}</p>
+    </div>
+    <form [formGroup]="commentForm">
+        <mat-form-field>
+            <mat-label>Titre</mat-label>
+            <input type="text" name="title" formControlName="title" matInput />
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Leave a comment</mat-label>
+            <textarea matInput placeholder="Ex. It makes me feel..." formControlName="comment_body"></textarea>
+        </mat-form-field>
+    </form>
+    <button mat-raised-button color="primary" type="submit" (click)="editComment()">edit com</button>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { ItemMoovieComponent } from "../item-moovie/item-moovie.component";
 import { Moovie } from '../../models/moovie.model';
 import { MooviesService } from '../../services/moovies.service';
@@ -10,29 +10,46 @@ import { MooviesService } from '../../services/moovies.service';
     styleUrl: './moovies-list.component.scss',
     imports: [ItemMoovieComponent]
 })
-export class MooviesListComponent implements OnInit {
+export class MooviesListComponent implements OnInit  {
+      @ViewChild('tableBody') tableBody!: ElementRef;
+
       public moovies: Moovie[] = [];
       @Output() lgMoovies = new EventEmitter<any>();
-
+      
+      constructor(public moovieService: MooviesService) {};
+      
+      // défilment à la souris
+      @HostListener('wheel', ['$event'])
+      onWheel(event: WheelEvent) {
+        const delta = Math.sign(event.deltaY);
+        this.tableBody.nativeElement.scrollLeft += delta * 100;
+      }
+      
       ngOnInit(): void {
-        this.getMoovie();
+        this.fetchMoovie();
+        this.moovieService.AddAllMoovie(this.moovies);
       }
 
-      constructor(public moovieService: MooviesService) {};
 
-      getMoovie() {
+      fetchMoovie() {
         let urlImg = 'https://image.tmdb.org/t/p/w185'
 
         this.moovieService.fetchMoovies().subscribe({
             next: (data) => {
+            console.log(data[1])
             // map vers movie list
             this.moovies = data[1].map((el: any) => ({ 
-              title: el.title, 
-              poster_path: `${urlImg}${el.poster_path}` 
+              id: el.id,
+              title: el.title,
+              poster_path: `${urlImg}${el.poster_path}`,
+              overview: el.overview,
+              release_date: el.release_date,
+              vote_average: el.vote_average,
+              adult: el.adult
             }))
             this.lgMoovies.emit(data[1].length);
-            
-        }, error: (err) => { console.log(err)}
+            return this.moovies
+          }, error: (err) => { console.log(err)}
         });
+      }
     }
-}

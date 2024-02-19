@@ -1,7 +1,6 @@
-import { NgFor } from '@angular/common';
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MooviesService } from '../../services/moovies.service';
-import { Moovie } from '../../models/moovie.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MovieDetailComponent } from '../movie-detail/movie-detail.component';
 import { Router } from '@angular/router';
@@ -9,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-item-moovie',
   standalone: true,
-  imports: [NgFor, MatButtonModule, MovieDetailComponent],
+  imports: [CommonModule, MatButtonModule, MovieDetailComponent],
   templateUrl: './item-moovie.component.html',
   styleUrl: './item-moovie.component.scss'
 })

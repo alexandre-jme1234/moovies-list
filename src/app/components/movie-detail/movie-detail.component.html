@@ -11,21 +11,32 @@
             <h2>Sortie le</h2>
             <div class="text-white"><p>{{moovie.release_date | date:'mediumDate'}}</p></div>
         </div>
-        </div>
+    </div>
+    <div class="flex flex-row ml-5">
+        <button mat-fab color="primary" aria-label="edit comment" (click)="toggleEdition()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>        
 </div>
     </div>
     <div class="text-white mt-10"><h2>Description</h2>
-    <p>{{moovie.overview}}</p>
+        <p>{{moovie.overview}}</p>
     </div>
-    <form [formGroup]="commentForm">
-        <mat-form-field>
-            <mat-label>Titre</mat-label>
-            <input type="text" name="title" formControlName="title" matInput />
-        </mat-form-field>
+    <div class="" *ngIf="isEditing">
+        <h2 class="text-white">Edit Commentaire</h2>
+        <form [formGroup]="commentForm" class="flex flex-col justify-between w-full">
+            <mat-form-field>
+                <mat-label>Titre</mat-label>
+                <input type="text" name="title" formControlName="title" matInput />
+            </mat-form-field>
         <mat-form-field class="example-full-width">
             <mat-label>Leave a comment</mat-label>
             <textarea matInput placeholder="Ex. It makes me feel..." formControlName="comment_body"></textarea>
         </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" (click)="editComment()">edit com</button>
     </form>
-    <button mat-raised-button color="primary" type="submit" (click)="editComment()">edit com</button>
+</div>
+<div style="color: aliceblue; font-size: larger; margin: 5% 0;"><p>Critiques récentes: Avis d'internautes</p>
+    <app-comment [comments]="comments"></app-comment>
+</div>
 </div>

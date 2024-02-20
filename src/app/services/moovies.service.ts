@@ -10,8 +10,9 @@ import { error } from 'console';
   providedIn: 'root'
 })
 export class MooviesService {
-  public moovies!: Moovie[];
+  public moovies!: Moovie[]; 
   public moovieSubject: BehaviorSubject<object> = new BehaviorSubject<object>({});
+  public fetchMoovie: any;
 
   constructor(private http: HttpClient, private auth: AuthService) {
   };
@@ -19,6 +20,7 @@ export class MooviesService {
   public getMoovieObservable() {
     return this.moovieSubject.asObservable();
   }
+
 
   public fetchMoovies() {
     const basicUrl = 'https://api.themoviedb.org/3/discover/movie?primary_release_date.lte=2024-01&region=fr-FR&primary_release_year=2024&sort_by'
@@ -34,6 +36,16 @@ export class MooviesService {
         }
         return moovies;
       }))
+  }
+
+  cacheMoovies(data: any) {
+    console.log('cache moovie', data);
+    this.fetchMoovie = data
+    return console.log('cache moovies', this.fetchMoovie);
+  }
+
+  getCacheMoovies() {
+    return this.fetchMoovie;
   }
 
 // créé un nouveau moovie seulement s'il n'existe pas

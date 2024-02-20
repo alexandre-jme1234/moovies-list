@@ -1,6 +1,6 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MooviesService } from '../../services/moovies.service';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -42,7 +42,13 @@ export class MovieDetailComponent implements OnInit {
   private comment!: Comment|undefined;
   public comments: any[] | undefined
 
-  constructor(private moovieService: MooviesService, private route: ActivatedRoute, private formBuilder: FormBuilder, private commentService: CommentService) {
+  constructor(
+    private moovieService: MooviesService, 
+    private route: ActivatedRoute, 
+    private formBuilder: FormBuilder, 
+    private commentService: CommentService,
+    private router: Router
+    ) {
     this.commentForm = this.createForm();
   };
 
@@ -95,6 +101,10 @@ export class MovieDetailComponent implements OnInit {
     console.log(this.comment)
 
     return this.commentService.AddComment(this.comment)
+  }
+
+  stepBack() {
+    return this.router.navigateByUrl('/home');
   }
 }
   

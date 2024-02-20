@@ -26,6 +26,7 @@ export class ItemMoovieComponent implements OnInit {
 
   constructor(private mooviesService: MooviesService, private router: Router) {};
   ngOnInit(): void {
+    console.log('after fetch', this.moovies)
    this.moovies;
    this.mooviesService.getIdMoovie('Sixty Minutes')
   }

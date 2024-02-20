@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, HostListener, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { ItemMoovieComponent } from "../item-moovie/item-moovie.component";
 import { Moovie } from '../../models/moovie.model';
 import { MooviesService } from '../../services/moovies.service';
@@ -27,16 +27,21 @@ export class MooviesListComponent implements OnInit  {
       
       ngOnInit(): void {
         this.fetchMoovie();
+        console.log('recup fecth', this.moovieService.moovies = this.moovies);
         this.moovieService.AddAllMoovie(this.moovies);
       }
 
+      getCachedMoovie() {
+        // rendre persistant fecth moovies dans moovie Service
+        this.moovies = this.moovieService.getCacheMoovies();
+      }
 
-      fetchMoovie() {
+      public fetchMoovie() {
         let urlImg = 'https://image.tmdb.org/t/p/w185'
-
+    
         this.moovieService.fetchMoovies().subscribe({
             next: (data) => {
-            console.log(data[1])
+            // console.log(data[1])
             // map vers movie list
             this.moovies = data[1].map((el: any) => ({ 
               id: el.id,
@@ -47,9 +52,12 @@ export class MooviesListComponent implements OnInit  {
               vote_average: el.vote_average,
               adult: el.adult
             }))
-            this.lgMoovies.emit(data[1].length);
-            return this.moovies
+            this.moovieService.cacheMoovies(this.moovies);
+            console.log('fetch init', this.moovies);
+            // this.lgMoovies.emit(data[1].length);
+            // return this.moovies
           }, error: (err) => { console.log(err)}
         });
       }
     }
+

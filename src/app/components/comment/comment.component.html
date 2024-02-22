@@ -1,4 +1,7 @@
-<div *ngFor="let comment of commentsChanges" > 
+<div *ngFor="let comment of comments" >
+    <div>
+        <h2>{{comment.attributes.identifier}}</h2>
+    </div>
     <div>
         <h2>{{comment.attributes.title}}</h2>
     </div>

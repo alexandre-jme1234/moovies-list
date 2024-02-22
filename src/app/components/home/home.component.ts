@@ -26,13 +26,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     usernameCurrent!: string;
     getCurrentuser!: Subscription
     dtMoovie: any;
-    
+    userStore: any
     constructor(public auth: AuthService, public storage: StorageService ) {
+        this.userStore = this.auth.getUserStored();
     }
 
     
     ngOnInit(): void {
-
         // get currentUser img profil & auth informations
         this.getCurrentuser = this.auth.getUserObservable().subscribe({
             next: (data: any) => {
@@ -41,9 +41,13 @@ export class HomeComponent implements OnInit, OnDestroy {
                     this.usernameCurrent = data.username;
                 } else {
                     this.usernameCurrent = this.currentUser.identifier;
+                    this.usernameCurrent = this.userStore.username;
                 };
                 this.auth.getImageProfil(this.currentUser).subscribe({
-                    next: (data) => {this.imgProfil = data, console.log(this.imgProfil)},
+                    next: (data) => {
+                        this.imgProfil = data,
+                        this.imgProfil = this.userStore.profil_img
+                    },
                     error: (err) => console.log(err)
                 });
             },

@@ -27,7 +27,6 @@ export class MooviesListComponent implements OnInit  {
       
       ngOnInit(): void {
         this.fetchMoovie();
-        console.log('recup fecth', this.moovieService.moovies = this.moovies);
         this.moovieService.AddAllMoovie(this.moovies);
       }
 
@@ -40,8 +39,7 @@ export class MooviesListComponent implements OnInit  {
         let urlImg = 'https://image.tmdb.org/t/p/w185'
     
         this.moovieService.fetchMoovies().subscribe({
-            next: (data) => {
-            // console.log(data[1])
+            next: (data: any) => {
             // map vers movie list
             this.moovies = data[1].map((el: any) => ({ 
               id: el.id,
@@ -53,9 +51,8 @@ export class MooviesListComponent implements OnInit  {
               adult: el.adult
             }))
             this.moovieService.cacheMoovies(this.moovies);
-            console.log('fetch init', this.moovies);
-            // this.lgMoovies.emit(data[1].length);
-            // return this.moovies
+            this.lgMoovies.emit(data[1].length);
+            return this.moovies
           }, error: (err) => { console.log(err)}
         });
       }

@@ -8,8 +8,9 @@ import { CommonModule } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { RouteReuseStrategy, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { StorageService } from '../../services/local-service.service';
 
 @Component({
     selector: 'app-edit-profil',
@@ -26,14 +27,21 @@ export class EditProfilComponent implements OnInit {
     getCurrentuser!: Subscription
     public userForm: FormGroup;
     public user!: User; 
+    public userStore: any = {};
 
     
-    constructor(public auth: AuthService, private formBuilder: FormBuilder, private router: Router) {
+    constructor(
+        public authService: AuthService, 
+        private formBuilder: FormBuilder,
+        private router: Router,
+        private storageService: StorageService
+        ) {
         this.userForm = this.createForm();
+        this.userStore = this.authService.getUserStored();
     }
 
     ngOnInit(): void {
-        this.getCurrentuser = this.auth.getUserObservable().subscribe({
+        this.getCurrentuser = this.authService.getUserObservable().subscribe({
             next: (data: any) => {
                 this.currentUser = data;
                 if(data.username) {
@@ -41,8 +49,12 @@ export class EditProfilComponent implements OnInit {
                 } else {
                     this.usernameCurrent = this.currentUser.identifier;
                 };
-                this.auth.getImageProfil(this.currentUser).subscribe({
-                    next: (data) => {this.imgProfil = data, console.log(this.imgProfil)},
+                this.authService.getImageProfil(this.currentUser).subscribe({
+                    next: (data) => {
+                        this.imgProfil = data,
+                        // this.auth.setProfilImageStore(data)
+                        this.imgProfil = this.userStore.profil_img
+                        },
                     error: (err) => console.log(err)
                 });
             },
@@ -62,17 +74,18 @@ export class EditProfilComponent implements OnInit {
       
       setProfilImg() {
         const val = this.userForm.value;
-        this.auth.getUser(this.usernameCurrent).subscribe({
+        this.authService.getUser(this.userStore.username).subscribe({
             next: (data) => {
                 let id = data.id
-                this.auth.updateUser(id, val.profil_img);
-                console.log(data)
+                this.authService.updateUser(id, val.profil_img);
             },
-            error: (err) => console.log(err)
+            error: (err) => console.log('user can be updated', err)
         });
-        return console.log(val)
-      }
-
+        this.authService.setProfilImageStore(val.profil_img);
+        this.imgProfil = val.profil_img;
+        return console.log('setProfilImg', val)
+    }
+    
       stepBack() {
         return this.router.navigateByUrl('/home');
       }

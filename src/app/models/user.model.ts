@@ -6,6 +6,13 @@ export interface User {
     role: string
 }
 
+export interface UserStored {
+    identifier: string,
+    username: string,
+    password: string,
+    profil_img: string
+}
+
 
 
 export class UserAuth implements User {

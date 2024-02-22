@@ -2,7 +2,8 @@ import { CommonModule, NgFor } from '@angular/common';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CommentService } from '../../services/comment.service';
-import { error } from 'console';
+import { StorageService } from '../../services/local-service.service';
+
 @Component({
   selector: 'app-comment',
   standalone: true,
@@ -17,19 +18,17 @@ export class CommentComponent implements OnInit, OnChanges {
   commentsChanges:any  = []
   testComment: any = {};
   getComments!: Subscription
-  constructor(public commentService: CommentService ) {}
+  constructor(
+    public commentService: CommentService,
+    public storageService: StorageService
+    ) {}
 
   ngOnInit(): void {
-    // this.comments;
-    this.getComments = this.commentService.getCommentsSubjects().subscribe({
-      next: (data) => this.testComment = data,
-      error: (err) => console.log(err)
-    })
+    this.comments;
   }
   
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('changes')
     this.commentsChanges = changes['comments'];
-    
+    this.comments = this.commentService.comments;
   }
 }

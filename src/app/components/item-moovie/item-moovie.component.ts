@@ -4,6 +4,7 @@ import { MooviesService } from '../../services/moovies.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MovieDetailComponent } from '../movie-detail/movie-detail.component';
 import { Router } from '@angular/router';
+import { CommentService } from '../../services/comment.service';
 
 @Component({
   selector: 'app-item-moovie',
@@ -20,22 +21,32 @@ export class ItemMoovieComponent implements OnInit {
   @Output() dtMoovie = new EventEmitter<any>();
   @Input()
   moovies: any[] = [];
+
+  comments: any
   
   
   moovie: any = {};
 
-  constructor(private mooviesService: MooviesService, private router: Router) {};
+  constructor(private mooviesService: MooviesService, private router: Router, private commentService: CommentService) {};
   ngOnInit(): void {
-    console.log('after fetch', this.moovies)
    this.moovies;
-   this.mooviesService.getIdMoovie('Sixty Minutes')
   }
 
 
 
   public findMovie(moovie: any) {
-    console.log(moovie)
-    this.router.navigate(['/home/', moovie.id]);
+    this.commentService.getAllCommentById(''+moovie.id).subscribe({
+      next: (data) => {
+        // store les comments avant l'init du movie-detail
+        this.commentService.cacheComments(data)
+        this.comments = this.commentService.comments
+      },
+      error: (err) => console.log(err)
+    });
+    
+    
+    this.router.navigate(['/home/', moovie.id])
     // this.mooviesService.AddMoovie(moovie);
+    return this.comments;
   }
 }

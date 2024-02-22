@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { UserStored } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class StorageService {

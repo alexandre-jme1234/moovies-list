@@ -56,7 +56,7 @@ export class AuthComponent implements OnInit {
 
   setLogin() {
     const val = this.userForm.value;
-    const user = { identifier: val.username, password: val.password };
+    const user = { identifier: val.username, password: val.password, profil_img: '' };
     console.log(user)
     return this.auth.login(user);
   }

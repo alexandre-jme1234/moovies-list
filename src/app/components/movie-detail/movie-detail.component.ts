@@ -10,10 +10,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
 import { Comment } from '../../models/comment.model';
 import { CommentService } from '../../services/comment.service';
-import { Observable, Subscription, first, tap } from 'rxjs';
+import { Observable, Subscription, first, map, tap } from 'rxjs';
 import { CommentComponent } from "../comment/comment.component";
-import { error } from 'console';
-import { response } from 'express';
+import { User, UserStored } from '../../models/user.model';
+import { StorageService } from '../../services/local-service.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'app-movie-detail',
@@ -41,15 +42,19 @@ export class MovieDetailComponent implements OnInit {
   public isEditing: boolean = false;
   private comment!: Comment|undefined;
   public comments: any[] | undefined
+  private userStored!: UserStored | null | undefined;
 
   constructor(
     private moovieService: MooviesService, 
     private route: ActivatedRoute, 
     private formBuilder: FormBuilder, 
     private commentService: CommentService,
-    private router: Router
+    private router: Router,
+    private storageService: StorageService,
+    private authService: AuthService
     ) {
     this.commentForm = this.createForm();
+    this.userStored = this.authService.getUserStored();
   };
 
   ngOnInit() {
@@ -60,6 +65,7 @@ export class MovieDetailComponent implements OnInit {
         if (movieId) {
           this.moovie = this.moovies[1].find((idMoovie: any) => idMoovie.id === +movieId);
           this.poster_path = `${this.UrlApi}${this.moovie.poster_path}`
+
         } else {
           this.moovie = undefined
         }
@@ -71,7 +77,7 @@ export class MovieDetailComponent implements OnInit {
     this.commentService.getAllCommentById(''+this.moovie.id).subscribe({
       next: (data) => {
         this.comments = data
-        console.log('all com by id', data)
+        // console.log('all com by id', data)
       },
       error: (err) => console.log(err)
     });
@@ -87,24 +93,35 @@ export class MovieDetailComponent implements OnInit {
     )
   }
 
+  get localStorage() {
+    return this.storageService
+  }
+
   public toggleEdition(): void {
     this.isEditing = !this.isEditing
   }
 
-  public editComment(): Subscription | undefined {
+  
+  public editComment(): Subscription {
     const val = this.commentForm.value;
+    console.log(this.userStored)
     this.comment = {
+      identifier: ''+this.userStored!.username,
       title: val.title,
       comment_body: val.comment_body,
       id_moovie: ''+this.moovie.id
     };
     console.log(this.comment)
-
     return this.commentService.AddComment(this.comment)
   }
 
+  
+  
   stepBack() {
+    console.log(this.commentService.comments);
     return this.router.navigateByUrl('/home');
   }
 }
+
+
   

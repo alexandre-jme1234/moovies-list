@@ -3,8 +3,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, concatMap, first, lastValueFrom, map, of, tap } from 'rxjs';
 import { Moovie } from '../models/moovie.model'
 import { AuthService } from './auth.service';
-import { response } from 'express';
-import { error } from 'console';
 
 @Injectable({
   providedIn: 'root'
@@ -39,9 +37,8 @@ export class MooviesService {
   }
 
   cacheMoovies(data: any) {
-    console.log('cache moovie', data);
     this.fetchMoovie = data
-    return console.log('cache moovies', this.fetchMoovie);
+    return this.fetchMoovie;
   }
 
   getCacheMoovies() {
@@ -84,7 +81,7 @@ public getAllMoovie(): Observable<any> {
 }
 
 public AddAllMoovie(moovies: any[]): Observable<any> {
-  console.log('Moovies', moovies)
+  // console.log('Moovies', moovies)
   return this.http.get<any>('http://localhost:1337/api/moovies', this.auth.getHeaders())
   .pipe(
     map((response: any) => {
@@ -93,7 +90,6 @@ public AddAllMoovie(moovies: any[]): Observable<any> {
     for (let i = 0; i < moovies.length; i++) {
       let findIdMoovie = data.find((el: any) => el.attributes.title === moovies[i].title);
       if (!findIdMoovie) {
-        console.log('eeeee')
         let valueData = {
           "data": {
             "title": moovies[i].title,

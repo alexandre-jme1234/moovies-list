@@ -4,11 +4,17 @@ import { UserStored } from '../models/user.model';
 @Injectable({ providedIn: 'root' })
 export class StorageService {
   getItem(key: string): string | null {
-    return window.localStorage.getItem(`${key}`);
+    if(typeof window !== 'undefined') {
+      return window.localStorage.getItem(`${key}`);
+    } else {
+      return null
+    }
   }
 
   setItem(key: string, value: string): void {
-    window.localStorage.setItem(`${key}`, value);
+    if(typeof window !== 'undefined') {
+      window.localStorage.setItem(`${key}`, value);
+    }
   }
 
   removeItem(key: string): void {

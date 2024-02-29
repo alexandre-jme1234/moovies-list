@@ -41,7 +41,7 @@ export class MovieDetailComponent implements OnInit {
   public commentForm: FormGroup;
   public isEditing: boolean = false;
   private comment!: Comment|undefined;
-  public comments: any[] | undefined
+  public comments: any[] | undefined = [];
   private userStored!: UserStored | null | undefined;
 
   constructor(
@@ -55,9 +55,6 @@ export class MovieDetailComponent implements OnInit {
     ) {
     this.commentForm = this.createForm();
     this.userStored = this.authService.getUserStored();
-  };
-
-  ngOnInit() {
     this.moovieService.fetchMoovies().subscribe({
       next: (data) => {
         this.moovies = data;
@@ -72,15 +69,21 @@ export class MovieDetailComponent implements OnInit {
       },
       error: (err) => console.log(err)
     });
+  };
 
-    // filter by Id moovie all comments
-    this.commentService.getAllCommentById(''+this.moovie.id).subscribe({
-      next: (data) => {
-        this.comments = data
-        // console.log('all com by id', data)
-      },
-      error: (err) => console.log(err)
-    });
+  ngOnInit() {
+        // filter by Id moovie all comments
+        this.commentService.getAllCommentById(''+this.moovie.id).subscribe({
+          next: (data) => {
+            this.comments = data
+            // console.log('all com by id', data)
+          },
+          error: (err) => console.log(err),
+          complete: () => {
+            console.log(this.comments)
+            return this.comments
+          }
+        });
   }
 
 
@@ -99,6 +102,7 @@ export class MovieDetailComponent implements OnInit {
 
   public toggleEdition(): void {
     this.isEditing = !this.isEditing
+    console.log(this.comments)
   }
 
   
@@ -106,14 +110,16 @@ export class MovieDetailComponent implements OnInit {
     const val = this.commentForm.value;
     console.log(this.userStored)
     this.comment = {
-      identifier: ''+this.userStored!.username,
+      identifier: ''+this.userStored!.username, 
       title: val.title,
       comment_body: val.comment_body,
       id_moovie: ''+this.moovie.id
     };
-    console.log(this.comment)
+    console.log(this.comments)
     return this.commentService.AddComment(this.comment)
   }
+
+  
 
   
   

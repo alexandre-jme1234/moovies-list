@@ -55,19 +55,20 @@ export class AuthService {
   }
 
   public getUserStored(): UserStored | undefined | null {
-    let userStored = this.storageService.getItem("user");
+      let userStored = this.storageService.getItem("user");
 
-    if(userStored) {
-      let userStoredOj = JSON.parse(userStored!);
-      this.userStored = userStoredOj
-      return this.userStored;
-    } else {
-      userStored = null
-      console.log('user doesnt exist', userStored)
-      return userStored;
-    }
+      if(userStored) {
+        let userStoredOj = JSON.parse(userStored!);
+        this.userStored = userStoredOj
+        return this.userStored;
+      } else {
+        userStored = null
+        console.log('user doesnt exist', userStored)
+        return userStored;
+      }
+
   }
-
+  
   // màj img local storage
   public setProfilImageStore(val: UserStored):  UserStored | undefined | null {
     let userStored = this.storageService.getItem("user");

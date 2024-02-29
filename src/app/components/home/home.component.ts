@@ -9,6 +9,7 @@ import { StorageService } from '../../services/local-service.service';
 import { Subscription } from 'rxjs';
 import { MovieDetailComponent } from "../movie-detail/movie-detail.component";
 import { ItemMoovieComponent } from "../item-moovie/item-moovie.component";
+import { MooviesService } from '../../services/moovies.service';
 
 @Component({
     selector: 'app-home',
@@ -17,9 +18,8 @@ import { ItemMoovieComponent } from "../item-moovie/item-moovie.component";
     styleUrl: './home.component.scss',
     imports: [CommonModule, MooviesListComponent, MenuSettingsComponent, MenuSettingsComponent, MooviesListComponent, MatMenuModule, MatButtonModule, MovieDetailComponent, ItemMoovieComponent]
 })
-export class HomeComponent implements OnInit, OnDestroy {
-
-    receivedData: any;
+export class HomeComponent implements OnInit {
+    receivedData!: number
     dateRealese: number = Date.now();
     imgProfil!: any;
     currentUser!:{identifier: string, password: string};
@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     getCurrentuser!: Subscription
     dtMoovie: any;
     userStore: any
-    constructor(public auth: AuthService, public storage: StorageService ) {
+    constructor(public auth: AuthService, public storage: StorageService, public moovieService: MooviesService ) {
         this.userStore = this.auth.getUserStored();
     }
 
@@ -54,18 +54,14 @@ export class HomeComponent implements OnInit, OnDestroy {
             error: (err) => console.log(err)
         })
     }
-    
+
     // length moovies list : output by emit become children app-list
-    receiveData(data: any) {
-        this.receivedData = data;
+    public receiveData(data: number): number {
+            return this.receivedData = data;
     }
+
 
     receiveDtMoovie(el: any) {
-        console.log('dtMoovie', el)
         this.dtMoovie = el;
-    }
-
-    ngOnDestroy(): void {
-        // this.getCurrentuser.unsubscribe();
     }
 }

@@ -13,20 +13,13 @@ export class CommentService {
 
   public comments!: Comment[];
   private commentSubject: BehaviorSubject<any[]> = new BehaviorSubject<Comment[]>([]);
+  public testComment: any = {}
+  public id_moovie: any = ''
+  public mergedObject: any = {}
   
   
   public getCommentsSubjects() {
   return this.commentSubject.asObservable();
-  }
-
-  public cacheComments(data: any) {
-    if(this.comments !== null || undefined) {
-      this.comments = [];
-      this.comments = data;
-      return this.comments
-    } else {
-      return this.comments = data
-    }
   }
 
   public AddComment(comment: Comment | undefined) {
@@ -43,12 +36,25 @@ export class CommentService {
     this.authService.getHeaders()
     ).pipe(
     first(), 
-    // tap((response) => console.log('add af map', response)),
+    tap((response) => console.log('add af map', response)),
     catchError(() => {throw new Error})).subscribe({
       next: (data: any)  => {
-        // console.log('add comment', data.data.attributes)
+        console.log('new comment', data.data.attributes.id_moovie)
         this.commentSubject.next(data.data.attributes)
-        // location.reload();
+        this.testComment = data;
+        this.id_moovie = data.data.attributes.id_moovie
+        /* this.getAllCommentById(''+this.id_moovie).subscribe({
+          next: (data) => {
+            // store les comments avant l'init du movie-detail
+            this.comments = data
+            this.comments = {...this.testComment, ...data}
+
+            console.log('comment at fetch', this.testComment.data)
+            console.log('fetch after add', this.comments)
+            console.log('test filter', this.mergedObject)
+          },
+      error: (err) => console.log(err)
+        }); */
       }
     })
   }

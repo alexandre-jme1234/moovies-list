@@ -38,8 +38,8 @@ export class ItemMoovieComponent implements OnInit {
     this.commentService.getAllCommentById(''+moovie.id).subscribe({
       next: (data) => {
         // store les comments avant l'init du movie-detail
-        this.commentService.cacheComments(data)
-        this.comments = this.commentService.comments
+        this.commentService.comments = data
+        this.comments = data
       },
       error: (err) => console.log(err)
     });

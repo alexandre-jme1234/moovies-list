@@ -37,12 +37,12 @@ export class MooviesService {
   }
 
   cacheMoovies(data: any) {
-    this.fetchMoovie = data
-    return this.fetchMoovie;
+    this.moovies = data
+    return this.moovies;
   }
 
   getCacheMoovies() {
-    return this.fetchMoovie;
+    return this.moovies;
   }
 
 // créé un nouveau moovie seulement s'il n'existe pas
@@ -70,11 +70,6 @@ public AddMoovie(moovie: any) {
     error: (err) => console.log(err)
   });
 }
-
-/* public getAllMoovie(): Observable<any> {
-  return this.http.get('http://localhost:1337/api/moovies', 
-  this.auth.getHeaders()).pipe(first())
-} */
 
 public getAllMoovie(): Observable<any> {
   return this.http.get<any>('http://localhost:1337/api/moovies', this.auth.getHeaders()).pipe(tap((response) => {const data = response.data; console.log(data)}), first());

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Comment } from '../models/comment.model';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
-import { BehaviorSubject, catchError, first, map, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, first, map, tap } from 'rxjs';
+import { resolve } from 'path';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +60,77 @@ export class CommentService {
     })
   }
 
-  // get All Comments by Id Moovie
+  public results!: any;
+
+
+
+
+  public AddCommentTest(comment: Comment | undefined): Promise<Comment | undefined> {
+    let apiUrl = 'http://localhost:1337/api/comments'
+    let commentFormated = {
+      "data":{
+        "identifier": comment!.identifier,
+        "title": comment!.title,
+        "comment_body": comment!.comment_body,
+        "id_moovie": comment!.id_moovie
+      }
+    }
+    
+    return new Promise((resolve, reject) => {
+      this.http.post(apiUrl, commentFormated, this.authService.getHeaders())
+      .toPromise()
+      .then((res: any) => {
+        if(res.data.attributes.comment_body !== "" && res.data.attributes.title !== "") {
+          this.results = res.data.attributes.comment_body
+          // setTimeout(() => resolve(this.results), 40000)
+          console.log('sucess', res.data.attributes.comment_body)
+          resolve(this.results)
+        } else {
+          reject(new Error('Comment doesnt add'));
+        }
+        },)
+      })
+    }
+
+  public dataMoovie!:any;
+  public commentsTest: any[] = [];
+
+  async getAllCommentByIdTest(comment: Comment | undefined) {
+    let apiUrl = 'http://localhost:1337/api/comments'
+    let addComent = await this.AddCommentTest(comment);
+    let id_moovie = comment?.id_moovie;
+    this.commentsTest.push({...comment})
+
+
+    let findMoovie = await new Promise((resolve, reject) => {
+        this.http.get(apiUrl, this.authService.getHeaders())
+          .toPromise()
+          .then((res: any) => {
+            let data = res.data
+
+            
+            this.dataMoovie = data.filter((comment: any) => {
+              // this.dataMoovie.push({...comment[i]})
+              return comment.attributes.id_moovie === id_moovie
+            })
+
+            for(let i in this.commentsTest ){
+              if (this.commentsTest[i].id_moovie !== id_moovie) {
+                this.commentsTest.splice(this.commentsTest[i], 1)
+                this.dataMoovie.push({...this.commentsTest[i]})
+              } else {
+                this.dataMoovie.push({...this.commentsTest[i]})
+              }
+            }
+  
+              console.log('get comments by idMoovie', this.dataMoovie)
+              resolve(this.dataMoovie);
+          }, msg => reject(msg));
+      })
+      return this.dataMoovie;
+  }
+
+
   public getAllCommentById(idMoovie: string|null) {
     return this.http.get('http://localhost:1337/api/comments', this.authService.getHeaders())
     .pipe(
@@ -70,5 +141,17 @@ export class CommentService {
         return grCommentByID;
       }),
     )
+  }
+
+  // get All Comments by Id Moovie
+  async getAllCommentById$(idMoovie: string|null) {
+    return new Promise((resolve, reject) => {
+      this.http.get('http://localhost:1337/api/comments', this.authService.getHeaders())
+      .toPromise()
+      .then((res: any) => {
+          let grCommentByID = res.filter((comment: any) => comment.attributes.id_moovie === idMoovie);
+          return grCommentByID;
+        })
+      })
   }
 }

@@ -1,7 +1,7 @@
 <div *ngIf="moovie" class="col container mx-auto px-20">
-    <div>
-        <button mat-fab color="primary" aria-label="back to menu" (click)="stepBack()">
-            <mat-icon>arrow_back</mat-icon>
+    <div class="mb-2">
+        <button mat-raised-button color="primary" aria-label="back to menu" (click)="stepBack()">
+            retour<mat-icon>arrow_back</mat-icon>
           </button>
     </div>
     <div class="flex row">
@@ -18,10 +18,10 @@
         </div>
     </div>
     <div class="flex flex-row ml-5">
-        <button mat-fab color="primary" aria-label="edit comment" (click)="toggleEdition()">
-          <mat-icon>edit</mat-icon>
+        <button mat-raised-button color="primary" aria-label="edit comment" (click)="toggleEdition()">
+            <mat-icon>edit</mat-icon>Poster une critique
         </button>
-      </div>        
+    </div>      
 </div>
     </div>
     <div class="text-white mt-10"><h2>Description</h2>

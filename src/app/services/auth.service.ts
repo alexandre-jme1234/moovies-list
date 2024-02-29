@@ -46,14 +46,6 @@ export class AuthService {
       });
   }
 
-  public testLogin(user: any) {
-    console.log(user.identifier)
-    this.getUser(user.identifier).subscribe({
-      next: (data) => console.log(data),
-      error: (err) => console.log(err)
-    });
-  }
-
   public getUserStored(): UserStored | undefined | null {
       let userStored = this.storageService.getItem("user");
 

@@ -75,14 +75,10 @@ export class MovieDetailComponent implements OnInit {
         // filter by Id moovie all comments
         this.commentService.getAllCommentById(''+this.moovie.id).subscribe({
           next: (data) => {
-            this.comments = data
+            return this.comments = data
             // console.log('all com by id', data)
           },
-          error: (err) => console.log(err),
-          complete: () => {
-            console.log(this.comments)
-            return this.comments
-          }
+          error: (err) => console.log(err)
         });
   }
 
@@ -102,24 +98,24 @@ export class MovieDetailComponent implements OnInit {
 
   public toggleEdition(): void {
     this.isEditing = !this.isEditing
-    console.log(this.comments)
   }
 
   
-  public editComment(): Subscription {
+  async editComment(): Promise<any> {
     const val = this.commentForm.value;
     console.log(this.userStored)
     this.comment = {
-      identifier: ''+this.userStored!.username, 
+      identifier: ''+this.userStored!.username,
       title: val.title,
       comment_body: val.comment_body,
       id_moovie: ''+this.moovie.id
     };
     console.log(this.comments)
-    return this.commentService.AddComment(this.comment)
+    this.comments = await this.commentService.getAllCommentByIdTest(this.comment);
+    console.log('have in component', this.comments)
+    return this.comments
   }
 
-  
 
   
   

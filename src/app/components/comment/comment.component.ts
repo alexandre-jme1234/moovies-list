@@ -17,7 +17,7 @@ import {MatIconModule} from '@angular/material/icon';
 })
 
 
-export class CommentComponent implements OnInit, OnChanges {
+export class CommentComponent implements OnInit {
   
   testMoovie: CommentTest = {
     'identifier': 'Alexandre',
@@ -38,20 +38,17 @@ export class CommentComponent implements OnInit, OnChanges {
     public storageService: StorageService,
     ) {
      // this.userStored = this.authService.getUserStored();
+     // console.log('comments in comment comp', this.comments)
+     // this.comments =  this.commentService.getAllCommentById$()
     }
-
-  ngOnInit(): void {
-    this.comments;
+    
+    ngOnInit(): void {
+    console.log('comments __', this.comments)
   }
   
   ngOnChanges(changes: SimpleChanges): void {
     changes['comments'];
-    this.comments = this.commentService.comments;
-    this.commentService.getCommentsSubjects().subscribe({
-      next: (data) => console.log(data),
-      error: (err) => console.log(err)
-      })
-    console.log('comment', this.comments)
+    // console.log('comment', this.comments);
   }
 
   addLike() {

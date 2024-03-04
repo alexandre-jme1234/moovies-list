@@ -3,13 +3,14 @@ import { ItemMoovieComponent } from "../item-moovie/item-moovie.component";
 import { Moovie } from '../../models/moovie.model';
 import { MooviesService } from '../../services/moovies.service';
 import { ResolveEnd } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-moovies-list',
     standalone: true,
     templateUrl: './moovies-list.component.html',
     styleUrl: './moovies-list.component.scss',
-    imports: [ItemMoovieComponent]
+    imports: [CommonModule, ItemMoovieComponent]
 })
 export class MooviesListComponent implements OnInit  {
       @ViewChild('tableBody') tableBody!: ElementRef;

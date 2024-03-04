@@ -1,12 +1,15 @@
-<div class="menu-block" #menu>
-    <div style="display: flex; flex-direction: column;">
-        <h1>Welcome {{usernameCurrent}}</h1>
-        <h2>{{receivedData}} moovies released in {{ dateRealese | date:'MMMM' }}</h2>
+<div>
+    <div class="menu-block" #menu>
+        <div style="display: flex; flex-direction: column;">
+            <h1>Welcome {{usernameCurrent}}</h1>
+            <h2>{{receivedData}} moovies released in {{ dateRealese | date:'MMMM' }}</h2>
+        </div>
+        <div  style="display: flex; flex-direction: row; align-items: center; width: 100px; justify-content: space-around;">
+            <img style="height: 50px;  width: 50px; object-fit: cover; border-radius: 50px;" [src]="imgProfil" alt="">
+            <app-menu-settings></app-menu-settings>
+        </div>
     </div>
-    <div  style="display: flex; flex-direction: row; align-items: center; width: 100px; justify-content: space-around;">
-        <img style="height: 50px;  width: 50px; object-fit: cover; border-radius: 50px;" [src]="imgProfil" alt="">
-        <app-menu-settings></app-menu-settings>
-    </div>
+    <app-moovies-list (lgMoovies)="receiveData($event)"></app-moovies-list>
+    <app-item-moovie (dtMoovie)="receiveDtMoovie($event)"></app-item-moovie>
+    <app-top-comments></app-top-comments>
 </div>
-<app-moovies-list (lgMoovies)="receiveData($event)"></app-moovies-list>
-<app-item-moovie (dtMoovie)="receiveDtMoovie($event)"></app-item-moovie>

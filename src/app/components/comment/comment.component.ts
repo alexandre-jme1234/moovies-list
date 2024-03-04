@@ -1,5 +1,5 @@
-import { CommonModule, NgFor } from '@angular/common';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { CommonModule, NgFor, NgForOf } from '@angular/common';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CommentService } from '../../services/comment.service';
 import { StorageService } from '../../services/local-service.service';
@@ -16,7 +16,6 @@ import {MatIconModule} from '@angular/material/icon';
   styleUrl: './comment.component.scss'
 })
 
-
 export class CommentComponent implements OnInit {
   
   testMoovie: CommentTest = {
@@ -29,8 +28,8 @@ export class CommentComponent implements OnInit {
     'img_profil': 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png'
   }
 
-  @Input() comments: any[]|undefined = [];
-  testComment: any = {};
+  @Input() comments: any[]  = [];
+  testComment: any = {}
   getComments!: Subscription
   userStored: any = {}
   constructor(
@@ -46,11 +45,22 @@ export class CommentComponent implements OnInit {
     changes['comments'];
   }
 
-  addLike() {
-    return this.testMoovie.like++;
+  
+
+
+  async addLike(id_comment: any) {
+    let filterTest = this.comments?.find((e: any) => { return e.id ===  id_comment })
+    let updateLike = filterTest.attributes.like + 1
+    let addLikeStoredComment = await this.commentService.updateComment(filterTest.id, updateLike);
+    filterTest.attributes.like = updateLike
   }
 
-  lessLike() {
-    return this.testMoovie.like--;
+  async lessLike(id_comment: any) {
+    let filterTest = this.comments?.find((e: any) => { return e.id ===  id_comment });
+    if (filterTest.attributes.like > 0) {
+    let updateLike = filterTest.attributes.like - 1
+    let addLikeStoredComment = await this.commentService.updateComment(filterTest.id, updateLike);
+    filterTest.attributes.like = updateLike;
+    }
   }
 }

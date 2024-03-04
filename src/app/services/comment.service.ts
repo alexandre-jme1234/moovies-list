@@ -140,4 +140,40 @@ export class CommentService {
         })
       })
   }
+
+  async updateComment(id: any, like: number){
+    console.log('id comment : '+ id,'like : '+ like)
+    if(like <= 0) {
+      like = 0
+    } else {
+      console.log(like)
+    }
+    let dataTest = {
+      "data": {
+        "like": [`${like}`]
+      }
+    }
+
+    return new Promise((resolve, reject) => {
+      return this.http.put(`http://localhost:1337/api/comments/${id}`, dataTest)
+      .toPromise()
+      .then((response: any) => {
+      console.log(response),
+      resolve(response)},
+      (err) => reject(err)
+      )
+    })
+  }
+
+  async sortComment(): Promise<any> {
+    return new Promise((resolve, reject) => {
+    return this.http.get(`http://localhost:1337/api/comments?sort=like`, this.authService.getHeaders())
+    .toPromise()
+    .then((response: any) => {
+      let topComments = response.data.slice(-3);
+      resolve(topComments.reverse());
+      },
+      (msg) => reject(msg)
+    )})
+  }
 }

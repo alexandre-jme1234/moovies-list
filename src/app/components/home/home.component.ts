@@ -10,13 +10,14 @@ import { Subscription } from 'rxjs';
 import { MovieDetailComponent } from "../movie-detail/movie-detail.component";
 import { ItemMoovieComponent } from "../item-moovie/item-moovie.component";
 import { MooviesService } from '../../services/moovies.service';
+import { TopCommentsComponent } from "../top-comments/top-comments.component";
 
 @Component({
     selector: 'app-home',
     standalone: true,
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss',
-    imports: [CommonModule, MooviesListComponent, MenuSettingsComponent, MenuSettingsComponent, MooviesListComponent, MatMenuModule, MatButtonModule, MovieDetailComponent, ItemMoovieComponent]
+    imports: [CommonModule, MooviesListComponent, MenuSettingsComponent, MenuSettingsComponent, MooviesListComponent, MatMenuModule, MatButtonModule, MovieDetailComponent, ItemMoovieComponent, TopCommentsComponent]
 })
 export class HomeComponent implements OnInit {
     receivedData!: number

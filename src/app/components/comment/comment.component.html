@@ -1,4 +1,4 @@
-<div *ngFor="let comment of comments" >
+<div *ngFor="let comment of comments">
     <div class="flex flex-row rounded-lg bg-slate-700 space-x-4 w-300 mb-10">
         <div class="container bg-cover max-w-48 rounded-l-lg" style="background-image: url({{comment.attributes.img_moovie}});">
         </div>
@@ -11,15 +11,15 @@
                     <div class="h-5 mb-0 mr-3"><p>posté il y a 4 jours</p></div>
                 </div>
     
-                <div class="h-5 mb-0 mr-3 text-xl mb-3"><p>{{comment.attributes.title}}</p></div>
+                <div class="h-5 mb-0 mr-3 text-xl mb-3"><p >{{comment.attributes.title}}</p></div>
                 <div class="h-5 mb-0 mr-3 text-sm h-auto"><p>{{comment.attributes.comment_body}}</p></div>
 
                 <div class="flex flex-row justify-between">
-                    <div class="mt-5"><p>{{testMoovie.like+"  likes 👍"}}</p></div>
+                    <div class="mt-5"><p>{{ comment.attributes.like+' likes 👍' }}</p></div>
                     
                     <div class="flex flex-row w-70 space-x-4 justify-end mt-5 mr-5">
-                        <button type="button" mat-fab color="primary" (click)="addLike()"><mat-icon>thumb_up</mat-icon></button>
-                        <button type="button" mat-fab color="primary" (click)="lessLike()"><mat-icon>thumb_down</mat-icon></button>
+                        <button type="button" mat-fab color="primary" (click)="addLike(comment.id)"><mat-icon>thumb_up</mat-icon></button>
+                        <button type="button" mat-fab color="primary" (click)="lessLike(comment.id)"><mat-icon>thumb_down</mat-icon></button>
                     </div>
                 </div>
             </div>

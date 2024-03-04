@@ -29,8 +29,9 @@ export class HomeComponent implements OnInit {
     userStore: any
     constructor(public auth: AuthService, public storage: StorageService, public moovieService: MooviesService ) {
         this.userStore = this.auth.getUserStored();
+        console.log(this.imgProfil)
     }
-
+    
     
     ngOnInit(): void {
         // get currentUser img profil & auth informations
@@ -43,16 +44,10 @@ export class HomeComponent implements OnInit {
                     this.usernameCurrent = this.currentUser.identifier;
                     this.usernameCurrent = this.userStore.username;
                 };
-                this.auth.getImageProfil(this.currentUser).subscribe({
-                    next: (data) => {
-                        this.imgProfil = data,
-                        this.imgProfil = this.userStore.profil_img
-                    },
-                    error: (err) => console.log(err)
-                });
             },
             error: (err) => console.log(err)
         })
+        this.imgProfil = this.auth.getUserStored()?.profil_img
     }
 
     // length moovies list : output by emit become children app-list

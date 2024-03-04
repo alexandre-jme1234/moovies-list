@@ -35,18 +35,11 @@ export class ItemMoovieComponent implements OnInit {
 
 
   public findMovie(moovie: any) {
-    this.commentService.getAllCommentById(''+moovie.id).subscribe({
-      next: (data) => {
-        // store les comments avant l'init du movie-detail
-        this.commentService.comments = data
-        this.comments = data
-      },
-      error: (err) => console.log(err)
-    });
+    console.log('idMoovie', ''+moovie.id)
+    this.commentService.getAllCommentById$(''+moovie.id);
     
     
     this.router.navigate(['/home/', moovie.id])
-    // this.mooviesService.AddMoovie(moovie);
     return this.comments;
   }
 }

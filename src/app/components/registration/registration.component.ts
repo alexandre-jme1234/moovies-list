@@ -69,7 +69,7 @@ export class RegistrationComponent implements OnInit {
     const val = this.userForm.value;
     
     // assign clé valeur conforme au model strapi
-    this.user = {id: val.length+1, username: val.username, email: val.identifier, password: val.password, role: "1"}
+    this.user = {id: val.length+1, username: val.username, email: val.identifier, password: val.password, img_profil: 'registratehttps://images.desenio.com/zoom/wb0125-8batman-portrait50x70-55544-10774.jpg', role: "1"}
 
     return this.authService.registrate(this.user)
   }

@@ -1,22 +1,19 @@
 <div *ngFor="let comment of comments" >
     <div class="flex flex-row rounded-lg bg-slate-700 space-x-4 w-300 mb-10">
-        <div class="container bg-cover max-w-48 rounded-l-lg" style="background-image: url({{testMoovie.img_moovie}});">
+        <div class="container bg-cover max-w-48 rounded-l-lg" style="background-image: url({{comment.attributes.img_moovie}});">
         </div>
             <div  class="bg-slate-700 m-5 relative w-full">
     
                 <div class="flex flex-row h-7 content-center space-x-2">
                     <div class="h-5 mb-0 mr-3"><p>par</p></div>
-                    <img class="h-6 rounded-full" src="{{testMoovie.img_profil}}" alt="img_moovie">
-                    <div class="text-zinc-600 h-5 mb-0 mr-3"><p>{{"@"+comment.identifier}}</p></div>
+                    <img class="h-6 rounded-full" src="{{comment.attributes.img_profil}}" alt="img_moovie">
+                    <div class="text-zinc-600 h-5 mb-0 mr-3"><p>{{"@"+comment.attributes.identifier}}</p></div>
                     <div class="h-5 mb-0 mr-3"><p>posté il y a 4 jours</p></div>
                 </div>
     
-                <div class="h-5 mb-0 mr-3 text-xl mb-3"><p>{{comment.title}}</p></div>
-                <div class="h-5 mb-0 mr-3 text-sm h-auto"><p>{{comment.comment_body}}</p></div>
-    
-                <div class="absolute top-0 right-7">
-                    <button type="button" mat-fab color="primary"><mat-icon>close_small</mat-icon></button>
-                </div>
+                <div class="h-5 mb-0 mr-3 text-xl mb-3"><p>{{comment.attributes.title}}</p></div>
+                <div class="h-5 mb-0 mr-3 text-sm h-auto"><p>{{comment.attributes.comment_body}}</p></div>
+
                 <div class="flex flex-row justify-between">
                     <div class="mt-5"><p>{{testMoovie.like+"  likes 👍"}}</p></div>
                     

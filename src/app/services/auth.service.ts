@@ -46,7 +46,7 @@ export class AuthService {
       });
   }
 
-  public getUserStored(): UserStored | undefined | null {
+  public getUserStored() {
       let userStored = this.storageService.getItem("user");
 
       if(userStored) {
@@ -55,7 +55,6 @@ export class AuthService {
         return this.userStored;
       } else {
         userStored = null
-        console.log('user doesnt exist', userStored)
         return userStored;
       }
 

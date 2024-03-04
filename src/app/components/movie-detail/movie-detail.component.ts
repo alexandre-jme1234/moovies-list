@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
-import { Comment } from '../../models/comment.model';
+import { Comment, CommentTest } from '../../models/comment.model';
 import { CommentService } from '../../services/comment.service';
 import { Observable, Subscription, first, map, tap } from 'rxjs';
 import { CommentComponent } from "../comment/comment.component";
@@ -40,8 +40,8 @@ export class MovieDetailComponent implements OnInit {
   public UrlApi = 'https://image.tmdb.org/t/p/w185'
   public commentForm: FormGroup;
   public isEditing: boolean = false;
-  private comment!: Comment|undefined;
-  public comments: any[] | undefined = [];
+  private comment!: any|undefined;
+  public comments: any[]  = [];
   private userStored!: UserStored | null | undefined;
 
   constructor(
@@ -62,7 +62,6 @@ export class MovieDetailComponent implements OnInit {
         if (movieId) {
           this.moovie = this.moovies[1].find((idMoovie: any) => idMoovie.id === +movieId);
           this.poster_path = `${this.UrlApi}${this.moovie.poster_path}`
-
         } else {
           this.moovie = undefined
         }
@@ -71,15 +70,13 @@ export class MovieDetailComponent implements OnInit {
     });
   };
 
-  ngOnInit() {
-        // filter by Id moovie all comments
-        this.commentService.getAllCommentById(''+this.moovie.id).subscribe({
-          next: (data) => {
-            return this.comments = data
-            // console.log('all com by id', data)
-          },
-          error: (err) => console.log(err)
-        });
+  async ngOnInit() {
+    try {
+      this.comments = await this.commentService.getAllCommentById$(this.route.snapshot.paramMap.get('id'));
+      console.log(this.comments)
+    } catch {
+      console.error('Pas de commentaire')
+    }
   }
 
 
@@ -108,9 +105,12 @@ export class MovieDetailComponent implements OnInit {
       identifier: ''+this.userStored!.username,
       title: val.title,
       comment_body: val.comment_body,
-      id_moovie: ''+this.moovie.id
+      id_moovie: ''+this.moovie.id,
+      img_moovie: this.poster_path,
+      img_profil : ''+this.userStored!.profil_img,
+      like: 0
     };
-    console.log(this.comments)
+    console.log('bf send', this.comment)
     this.comments = await this.commentService.getAllCommentByIdTest(this.comment);
     console.log('have in component', this.comments)
     return this.comments

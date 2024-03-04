@@ -37,18 +37,13 @@ export class CommentComponent implements OnInit {
     public commentService: CommentService,
     public storageService: StorageService,
     ) {
-     // this.userStored = this.authService.getUserStored();
-     // console.log('comments in comment comp', this.comments)
-     // this.comments =  this.commentService.getAllCommentById$()
     }
     
     ngOnInit(): void {
-    console.log('comments __', this.comments)
   }
   
   ngOnChanges(changes: SimpleChanges): void {
     changes['comments'];
-    // console.log('comment', this.comments);
   }
 
   addLike() {

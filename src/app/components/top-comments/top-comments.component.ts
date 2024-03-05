@@ -23,9 +23,34 @@ export class TopCommentsComponent implements OnInit{
         try {
           this.comments = await this.commentService.sortComment();
           console.log('fetch for top')
-          console.log(this.comments)
+          // console.log(this.comments)
         } catch {
           console.error('Pas de commentaire')
         }
       }
+
+      public sortByIdentifier(data: any) {
+          data.sort((a: any, b: any) =>  { 
+              return b.id - a.id;
+          });
+      
+          return data.slice(0, 3); // Retourner les deux premiers éléments après le tri
+      } 
+
+
+      public async getTabsComments(event: any) {
+        if (event.index == 0) {
+          try {
+            this.comments = await this.commentService.sortComment();
+            console.log('fetch for top')
+            // console.log(this.comments)
+          } catch {
+            console.error('Pas de commentaire')
+          }
+        } else if (event.index == 1) {
+            this.comments = await this.commentService.getComment();
+            this.comments = this.sortByIdentifier(this.comments);
+        }
+    }
+    
 }

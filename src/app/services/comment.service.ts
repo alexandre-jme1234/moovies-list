@@ -5,13 +5,14 @@ import { AuthService } from './auth.service';
 import { BehaviorSubject, Observable, catchError, first, map, tap } from 'rxjs';
 import { resolve } from 'path';
 import { type } from 'os';
+import { StorageService } from './local-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient, private authService: AuthService, private localStorage: StorageService) { }
 
   public comments!: Comment[];
   private commentSubject: BehaviorSubject<any[]> = new BehaviorSubject<Comment[]>([]);
@@ -172,6 +173,19 @@ export class CommentService {
     .then((response: any) => {
       let topComments = response.data.slice(-3);
       resolve(topComments.reverse());
+      },
+      (msg) => reject(msg)
+    )})
+  }
+
+  async getComment(): Promise<any> {
+    let  username = this.authService.getUserStored();
+    return new Promise((resolve, reject) => {
+    return this.http.get(`http://localhost:1337/api/comments?filters[identifier][$eq]=${username?.username}`, this.authService.getHeaders())
+    .toPromise()
+    .then((response: any) => {
+      let data = response.data
+      resolve(data);
       },
       (msg) => reject(msg)
     )})

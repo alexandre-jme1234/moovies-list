@@ -1,16 +1,14 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MooviesService } from '../../services/moovies.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
-import { Comment, CommentTest } from '../../models/comment.model';
 import { CommentService } from '../../services/comment.service';
-import { Observable, Subscription, first, map, tap } from 'rxjs';
 import { CommentComponent } from "../comment/comment.component";
 import { User, UserStored } from '../../models/user.model';
 import { StorageService } from '../../services/local-service.service';
@@ -55,19 +53,28 @@ export class MovieDetailComponent implements OnInit {
     ) {
     this.commentForm = this.createForm();
     this.userStored = this.authService.getUserStored();
-    this.moovieService.fetchMoovies().subscribe({
-      next: (data) => {
-        this.moovies = data;
+
+    this.moovieService.currentMoovies$.subscribe({
+      next: async (data) => {
         const movieId: string | null = this.route.snapshot.paramMap.get('id');
-        if (movieId) {
-          this.moovie = this.moovies[1].find((idMoovie: any) => idMoovie.id === +movieId);
+        if(data.length === 0 && movieId) {
+          let result: any = await this.moovieService.fetchMoovie$();
+          this.moovie = result.find((idMoovie: any) => idMoovie.id === +movieId);
           this.poster_path = `${this.UrlApi}${this.moovie.poster_path}`
+          return this.moovie;
         } else {
-          this.moovie = undefined
+          this.moovies = data;
+          if (movieId) {
+            this.moovie = this.moovies.find((idMoovie: any) => idMoovie.id === +movieId);
+            this.poster_path = `${this.UrlApi}${this.moovie.poster_path}`
+              return this.moovie;
+            } else {
+              console.log('error', this.moovies)
+              this.moovie = undefined
+            }
         }
-      },
-      error: (err) => console.log(err)
-    });
+      }
+    })
   };
 
   async ngOnInit() {

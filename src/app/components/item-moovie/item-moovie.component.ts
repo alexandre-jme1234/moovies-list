@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MooviesService } from '../../services/moovies.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MovieDetailComponent } from '../movie-detail/movie-detail.component';
@@ -17,10 +17,9 @@ import { CommentService } from '../../services/comment.service';
 
 
 
-export class ItemMoovieComponent implements OnInit {
+export class ItemMoovieComponent implements OnInit, OnChanges {
   @Output() dtMoovie = new EventEmitter<any>();
-  @Input()
-  moovies: any[] = [];
+  @Input() moovies: any[] = [];
 
   comments: any
   
@@ -29,16 +28,16 @@ export class ItemMoovieComponent implements OnInit {
 
   constructor(private mooviesService: MooviesService, private router: Router, private commentService: CommentService) {};
   ngOnInit(): void {
-   this.moovies;
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('chang', changes)
+  }
 
 
   public findMovie(moovie: any) {
     console.log('idMoovie', ''+moovie.id)
     this.commentService.getAllCommentById$(''+moovie.id);
-    
-    
     this.router.navigate(['/home/', moovie.id])
     return this.comments;
   }

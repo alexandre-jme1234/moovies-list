@@ -34,12 +34,9 @@ p {
     margin-bottom: 0px;
 }
 
-h1 {
-    color: white
-}
-
-h2 {
-    color: white
+.mat-typography h1, .mat-typography h2, .mat-typography h3 {
+    color: white;
+    margin-bottom: 0;
 }
 
 .mat-typography h1 {

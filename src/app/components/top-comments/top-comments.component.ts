@@ -3,6 +3,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { CommentComponent } from "../comment/comment.component";
 import { CommentService } from '../../services/comment.service';
 import { CommentTest } from '../../models/comment.model';
+import { MooviesService } from '../../services/moovies.service';
 
 @Component({
     selector: 'app-top-comments',
@@ -13,7 +14,7 @@ import { CommentTest } from '../../models/comment.model';
 })
 export class TopCommentsComponent implements OnInit{
 
-    constructor(private commentService: CommentService) {
+    constructor(private commentService: CommentService, private mooviesService: MooviesService) {
 
     };
 
@@ -39,11 +40,12 @@ export class TopCommentsComponent implements OnInit{
 
 
       public async getTabsComments(event: any) {
+        let result = await this.mooviesService.getMoovie();
+        console.log(result)
         if (event.index == 0) {
           try {
             this.comments = await this.commentService.sortComment();
             console.log('fetch for top')
-            // console.log(this.comments)
           } catch {
             console.error('Pas de commentaire')
           }

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MooviesListComponent } from "../moovies-list/moovies-list.component";
 import { MenuSettingsComponent } from "../menu-settings/menu-settings.component";
 import { MatMenuModule } from '@angular/material/menu';
@@ -12,6 +12,7 @@ import { ItemMoovieComponent } from "../item-moovie/item-moovie.component";
 import { MooviesService } from '../../services/moovies.service';
 import { TopCommentsComponent } from "../top-comments/top-comments.component";
 
+
 @Component({
     selector: 'app-home',
     standalone: true,
@@ -20,6 +21,10 @@ import { TopCommentsComponent } from "../top-comments/top-comments.component";
     imports: [CommonModule, MooviesListComponent, MenuSettingsComponent, MenuSettingsComponent, MooviesListComponent, MatMenuModule, MatButtonModule, MovieDetailComponent, ItemMoovieComponent, TopCommentsComponent]
 })
 export class HomeComponent implements OnInit {
+    @ViewChild('week') public weekMoovieBtn!: any;
+    
+    isToggleDayMoovie: boolean = true;
+    isToggleWeekMoovie: boolean = true;
     receivedData!: number
     dateRealese: number = Date.now();
     imgProfil!: any;
@@ -55,7 +60,6 @@ export class HomeComponent implements OnInit {
     public receiveData(data: number): number {
             return this.receivedData = data;
     }
-
 
     receiveDtMoovie(el: any) {
         this.dtMoovie = el;

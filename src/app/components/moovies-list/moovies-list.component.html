@@ -1,3 +1,10 @@
+<div class="flex flex-row items-center w-full space-x-10 py-5 px-O">
+    <h3 class="mb-0">Tendances en France</h3>
+
+    <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+        <mat-button-toggle value="today" #today (click)="getTodayMoovie()">Cette semaine</mat-button-toggle>
+      </mat-button-toggle-group>
+</div>
 <div class="slider-moovies" #tableBody>
     <app-item-moovie id="moovies-list" [moovies]="moovies"></app-item-moovie>
 </div>

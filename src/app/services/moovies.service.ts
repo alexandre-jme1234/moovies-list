@@ -1,11 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AsyncSubject, BehaviorSubject, Observable, Subject, catchError, concatMap, first, lastValueFrom, map, of, tap } from 'rxjs';
+import { AsyncSubject, BehaviorSubject, Observable, Subject, catchError, concatMap, first, lastValueFrom, map, of, skip, tap } from 'rxjs';
 import { Moovie } from '../models/moovie.model'
 import { AuthService } from './auth.service';
-import { response } from 'express';
 import { environment } from '../../environments/environment.development';
-import { Data } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -132,7 +130,7 @@ public getAllMoovie(): Observable<any> {
       this.setTestCurrent(this.moovies);
       resolve(this.moovies)
     })
-  }; 
+  };
 
 
   formattedData(day: Date) {
@@ -174,10 +172,10 @@ public getAllMoovie(): Observable<any> {
           })
           console.log('fetch moovie sort by DailyDate _', typeof data)
           this.currentMooviesSubject.next(data);
-          this.currentMoovies$.subscribe((value) => {console.log(value)})
+          this.currentMoovies$.subscribe((value: any) => {console.log(value)})
           resolve(data);
         })
-        .catch(error => reject(error)))
+        .catch((error: any) => reject(error)))
   };
   
   public getIdMoovie(MoovieTitle: string): any {
@@ -194,5 +192,14 @@ public getAllMoovie(): Observable<any> {
       next: (data) => console.log(data),
       error: (err) => console.log(err)
     });
+  }
+
+
+  moovies$ = of([1, 2, 3, 4])
+
+  testMoovie$() {
+    this.moovies$.pipe(
+      skip(2)
+    ).subscribe(v => console.log('helo', v))
   }
 }

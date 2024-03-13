@@ -133,7 +133,7 @@ export class AuthService {
   }
 
   public updateUser(id: number, pathImg: string) {
-    return this.http.put(`http://localhost:1337/api/users/${id}?populate=*`,
+    return this.http.put(`http://localhost:1337/api/users/${id}?populate=*`, // !! recherche incrméenté perte de perf - remplacer par 
     { profil_img: pathImg },
     this.getHeaders()
     ).pipe(first())
@@ -178,7 +178,7 @@ export class AuthService {
     const justFilter = Object.fromEntries(filter);
     this.storageService.removeItem('user')
     this.storageService.setItem('user', JSON.stringify(justFilter));
-    return console.log('user stored __', justFilter)
+    return console.log('user stored __', justFilter);
   }
 
   public logout(): void {
@@ -186,5 +186,5 @@ export class AuthService {
     this.storageService.removeItem('user');
     this.router.navigateByUrl('/connexion');
     this.isLogedIn = false;
-  }
-} 
+  } 
+}

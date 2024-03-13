@@ -6,19 +6,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { StorageService } from '../../services/local-service.service';
-import { Subscription } from 'rxjs';
+import { Subscription, of, skip } from 'rxjs';
 import { MovieDetailComponent } from "../movie-detail/movie-detail.component";
 import { ItemMoovieComponent } from "../item-moovie/item-moovie.component";
 import { MooviesService } from '../../services/moovies.service';
 import { TopCommentsComponent } from "../top-comments/top-comments.component";
-
+import { ProgressBarComponent } from "../progress-bar/progress-bar.component";
 
 @Component({
     selector: 'app-home',
     standalone: true,
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss',
-    imports: [CommonModule, MooviesListComponent, MenuSettingsComponent, MenuSettingsComponent, MooviesListComponent, MatMenuModule, MatButtonModule, MovieDetailComponent, ItemMoovieComponent, TopCommentsComponent]
+    imports: [CommonModule, MooviesListComponent, MenuSettingsComponent, MenuSettingsComponent, MooviesListComponent, MatMenuModule, MatButtonModule, MovieDetailComponent, ItemMoovieComponent, TopCommentsComponent, ProgressBarComponent]
 })
 export class HomeComponent implements OnInit {
     @ViewChild('week') public weekMoovieBtn!: any;
@@ -33,11 +33,18 @@ export class HomeComponent implements OnInit {
     getCurrentuser!: Subscription
     dtMoovie: any;
     userStore: any
-    constructor(public auth: AuthService, public storage: StorageService, public moovieService: MooviesService ) {
+    constructor(
+        public auth: AuthService, 
+        public storage: StorageService, 
+        public moovieService: MooviesService,
+        ) {
+        
         this.userStore = this.auth.getUserStored();
-        console.log(this.imgProfil)
+        console.log(this.imgProfil);
     }
     
+
+    moovie$: any;
     
     ngOnInit(): void {
         // get currentUser img profil & auth informations

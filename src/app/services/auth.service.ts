@@ -5,6 +5,7 @@ import { StorageService } from './local-service.service';
 import { BehaviorSubject, Observable, first, map, tap } from 'rxjs';
 import { UserStored } from '../models/user.model';
 import { type } from 'os';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -145,7 +146,7 @@ export class AuthService {
 
   public getHeaders() {
     return {
-      headers: { Authorization: 'Bearer 87dd7e32a413d376d3f517db826ac13a5a72533019fd712a445fa30078bfbb933b00f38e9eae316671d55c90c0c05904c0e6f278a2142c36160a54de3445ead6d8cc0c40a9d969448c5355e0ce704c1060c4c5eb2a93b3eaf9d29f61b44a1b72008c61367e5cade7857ae0fe7eb28bf0dfdf5d540bfabe28695f01fe3ad822ff' }
+      headers: { Authorization: environment.key_STRAPI }
     };
   }
 

@@ -4,6 +4,7 @@ import { AsyncSubject, BehaviorSubject, Observable, Subject, catchError, concatM
 import { Moovie } from '../models/moovie.model'
 import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment.development';
+import { error } from 'console';
 
 @Injectable({
   providedIn: 'root'
@@ -56,10 +57,13 @@ export class MooviesService {
       .toPromise()
       .then((data) => {
         console.log(data)
-        resolve(data);
+        if(data) {
+          resolve(data);
+        } else {
+          reject(new Error('fetch failed'))
+        }
       })
       )
-
   }
 
   cacheMoovies(data: any) {

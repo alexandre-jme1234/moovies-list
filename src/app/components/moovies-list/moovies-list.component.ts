@@ -63,6 +63,7 @@ export class MooviesListComponent implements OnInit, OnChanges  {
           this.moovieService.fetchMoovies().subscribe({
               next: (data: any) => {
               // map vers movie list
+              console.log('fetch moovie', data);
               this.moovies = data[1].map((el: any) => ({ 
                 id: el.id,
                 title: el.title,
@@ -73,7 +74,8 @@ export class MooviesListComponent implements OnInit, OnChanges  {
                 adult: el.adult
               })
               )
-            }, error: (err) => { reject(err)}
+            }, error: (err) => {
+              reject(err)}
           });
           this.moovieService.setTestCurrent(this.moovies);
           resolve(this.moovies)

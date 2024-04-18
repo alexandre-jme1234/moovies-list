@@ -12,6 +12,7 @@ export class MooviesService {
   public moovies!: Moovie[]; 
   public moovieSubject: BehaviorSubject<object> = new BehaviorSubject<object>({});
   public fetchMoovie: any;
+  API_test = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ZTNmYmYyMjg5ZjQ4NmM3ZGE3NWQyMTdiN2U2MzU4NCIsInN1YiI6IjY0M2ZiMTFmYjBiYTdlMDUyNzEzMTQ3NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.TPm14QDpLKeSD-nFW16fzxQap0RSELJKPZ4fcJBQKPM';
   public url_local = environment.url_local;
   public isToggle: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
@@ -49,6 +50,7 @@ export class MooviesService {
   public async getMoovie(): Promise<any> {
     const basicUrl = 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.dsc'
     const API = environment.key_TMDB
+    const API_test = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ZTNmYmYyMjg5ZjQ4NmM3ZGE3NWQyMTdiN2U2MzU4NCIsInN1YiI6IjY0M2ZiMTFmYjBiYTdlMDUyNzEzMTQ3NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.TPm14QDpLKeSD-nFW16fzxQap0RSELJKPZ4fcJBQKPM'
     const headers = new HttpHeaders().set('Authorization', API)
     return new Promise((resolve, reject) => this.http.get(`${basicUrl}`, {headers})
       .toPromise()
